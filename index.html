@@ -27,20 +27,35 @@
                     <option value="Special Cocktails">Special Cocktails</option>
                     <option value="Birreria">Birreria</option>
                 </select>
+           <div style="text-align: center; margin-top: 40px;">
+        <button id="login-admin-btn" style="background: none; border: none; color: rgba(201, 160, 84, 0.4); font-size: 11px; cursor: pointer; text-decoration: underline;">
+            Area Riservata Staff
+        </button>
+    </div>
+
+    <div id="secret-admin-panel" class="admin-panel" style="display: none; margin-top: 20px; padding: 20px; background: rgba(201, 160, 84, 0.1); border: 1px dashed #c9a054; border-radius: 8px;">
+        <h3 style="color: #c9a054; text-align: center; margin-bottom: 15px; font-size: 16px; text-transform: uppercase;">Pannello Gestione Live</h3>
+        <form id="admin-form">
+            <div style="margin-bottom: 10px;">
+                <label style="display:block; font-size:12px; margin-bottom:3px;">Seleziona Categoria:</label>
+                <select id="admin-category" style="width:100%; padding:8px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px;">
+                    <option value="Special Cocktails">Special Cocktails</option>
+                    <option value="Birreria">Birreria</option>
+                </select>
             </div>
             <div style="margin-bottom: 10px;">
                 <label style="display:block; font-size:12px; margin-bottom:3px;">Nome Prodotto:</label>
                 <input type="text" id="admin-name" required placeholder="Es. Mojito" style="width:100%; padding:8px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px;">
             </div>
             <div style="margin-bottom: 10px;">
-                <label style="display:block; font-size:12px; margin-bottom:3px;">Prezzo (Senza simbolo €):</label>
+                <label style="display:block; font-size:12px; margin-bottom:3px;">Prezzo (Senza €):</label>
                 <input type="text" id="admin-price" required placeholder="Es. 5,50" style="width:100%; padding:8px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px;">
             </div>
             <div style="margin-bottom: 15px;">
-                <label style="display:block; font-size:12px; margin-bottom:3px;">Descrizione/Ingredienti:</label>
-                <textarea id="admin-desc" placeholder="Es. Rum, menta, lime..." style="width:100%; padding:8px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px; font-family:inherit;"></textarea>
+                <label style="display:block; font-size:12px; margin-bottom:3px;">Descrizione:</label>
+                <textarea id="admin-desc" placeholder="Ingredienti..." style="width:100%; padding:8px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px; font-family:inherit;"></textarea>
             </div>
-            <button type="submit" style="width:100%; padding:10px; background:#c9a054; color:#12241b; font-weight:bold; border:none; border-radius:4px; cursor:pointer; text-transform:uppercase;">Aggiungi al Menu al volo</button>
+            <button type="submit" style="width:100%; padding:10px; background:#c9a054; color:#12241b; font-weight:bold; border:none; border-radius:4px; cursor:pointer; text-transform:uppercase;">Aggiungi Prodotto</button>
         </form>
     </div>
 

@@ -52,38 +52,49 @@ function renderMenu() {
     });
 }
 
-// 3. Logica del Pannello Admin per aggiungere prodotti al volo
+// 3. Funzione per sbloccare l'Area Admin con Password
+function checkPassword() {
+    const passwordInserita = prompt("Inserisci la password amministratore per sbloccare il pannello:");
+    
+    // Scegli la password che preferisci, ora è impostata su admin123
+    if (passwordInserita === "admin123") {
+        document.getElementById('secret-admin-panel').style.display = 'block';
+        document.getElementById('login-admin-btn').style.display = 'none'; // Nasconde il pulsante di login
+        alert("Accesso eseguito! Pannello sbloccato in fondo alla pagina. 🔥");
+    } else {
+        alert("Password errata! Accesso negato.");
+    }
+}
+
+// Aggancia la funzione al pulsante segreto
+document.getElementById('login-admin-btn').addEventListener('click', checkPassword);
+
+// 4. Logica del modulo per aggiungere prodotti al volo
 document.getElementById('admin-form').addEventListener('submit', function(e) {
-    e.preventDefault(); // Blocca il ricaricamento della pagina
+    e.preventDefault();
 
     const category = document.getElementById('admin-category').value;
     const name = document.getElementById('admin-name').value;
     const price = document.getElementById('admin-price').value;
     const desc = document.getElementById('admin-desc').value;
 
-    // Trova la categoria giusta nell'array
     const targetSection = menuData.find(section => section.category === category);
 
     if (targetSection) {
-        // Aggiunge il nuovo prodotto
         targetSection.items.push({
             name: name,
             price: `€ ${price}`,
             desc: desc
         });
 
-        // Salva nel localStorage del browser
         localStorage.setItem('theTimeMenu', JSON.stringify(menuData));
-
-        // Aggiorna la vista del menu all'istante
         renderMenu();
 
-        // Svuota i campi del form
         document.getElementById('admin-name').value = '';
         document.getElementById('admin-price').value = '';
         document.getElementById('admin-desc').value = '';
         
-        alert('Prodotto aggiunto al volo con successo! 🔥');
+        alert('Prodotto aggiunto con successo!');
     }
 });
 
