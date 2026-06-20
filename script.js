@@ -1,4 +1,4 @@
-// 1. Dati iniziali del menu (se non c'è nulla salvato nel browser)
+// 1. Dati di default del menu
 const defaultMenuData = [
     {
         category: "Special Cocktails",
@@ -23,13 +23,14 @@ const defaultMenuData = [
     }
 ];
 
-// Carica i dati salvati o usa quelli di default
 let menuData = JSON.parse(localStorage.getItem('theTimeMenu')) || defaultMenuData;
 
-// 2. Funzione per renderizzare il menu nell'HTML
+// 2. Renderizza il menu (Funziona solo se siamo nella pagina index.html)
 function renderMenu() {
     const container = document.getElementById('menu-container');
-    container.innerHTML = ''; // Svuota prima di rifare il ciclo
+    if (!container) return; // Se siamo in admin.html, si ferma qui senza rompere il codice
+
+    container.innerHTML = ''; 
 
     menuData.forEach(section => {
         const title = document.createElement('div');
@@ -52,51 +53,36 @@ function renderMenu() {
     });
 }
 
-// 3. Funzione per sbloccare l'Area Admin con Password
-function checkPassword() {
-    const passwordInserita = prompt("Inserisci la password amministratore per sbloccare il pannello:");
-    
-    // Scegli la password che preferisci, ora è impostata su admin123
-    if (passwordInserita === "admin123") {
-        document.getElementById('secret-admin-panel').style.display = 'block';
-        document.getElementById('login-admin-btn').style.display = 'none'; // Nasconde il pulsante di login
-        alert("Accesso eseguito! Pannello sbloccato in fondo alla pagina. 🔥");
-    } else {
-        alert("Password errata! Accesso negato.");
-    }
+// 3. Gestione del Modulo di inserimento (Funziona solo se siamo in admin.html)
+const adminForm = document.getElementById('admin-form');
+if (adminForm) {
+    adminForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const category = document.getElementById('admin-category').value;
+        const name = document.getElementById('admin-name').value;
+        const price = document.getElementById('admin-price').value;
+        const desc = document.getElementById('admin-desc').value;
+
+        const targetSection = menuData.find(section => section.category === category);
+
+        if (targetSection) {
+            targetSection.items.push({
+                name: name,
+                price: `€ ${price}`,
+                desc: desc
+            });
+
+            localStorage.setItem('theTimeMenu', JSON.stringify(menuData));
+
+            document.getElementById('admin-name').value = '';
+            document.getElementById('admin-price').value = '';
+            document.getElementById('admin-desc').value = '';
+            
+            alert('Prodotto aggiunto con successo! Vai sulla pagina del menù per vederlo. 🔥');
+        }
+    });
 }
 
-// Aggancia la funzione al pulsante segreto
-document.getElementById('login-admin-btn').addEventListener('click', checkPassword);
-
-// 4. Logica del modulo per aggiungere prodotti al volo
-document.getElementById('admin-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const category = document.getElementById('admin-category').value;
-    const name = document.getElementById('admin-name').value;
-    const price = document.getElementById('admin-price').value;
-    const desc = document.getElementById('admin-desc').value;
-
-    const targetSection = menuData.find(section => section.category === category);
-
-    if (targetSection) {
-        targetSection.items.push({
-            name: name,
-            price: `€ ${price}`,
-            desc: desc
-        });
-
-        localStorage.setItem('theTimeMenu', JSON.stringify(menuData));
-        renderMenu();
-
-        document.getElementById('admin-name').value = '';
-        document.getElementById('admin-price').value = '';
-        document.getElementById('admin-desc').value = '';
-        
-        alert('Prodotto aggiunto con successo!');
-    }
-});
-
-// Mostra il menu all'avvio
+// Avvia il rendering se siamo sulla pagina clienti
 renderMenu();
