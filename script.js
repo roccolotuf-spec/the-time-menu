@@ -1,4 +1,3 @@
-// 1. Dati di default del menu
 const defaultMenuData = [
     {
         category: "Special Cocktails",
@@ -25,10 +24,10 @@ const defaultMenuData = [
 
 let menuData = JSON.parse(localStorage.getItem('theTimeMenu')) || defaultMenuData;
 
-// 2. Renderizza il menu (Funziona solo se siamo nella pagina index.html)
+// --- 1. RENDERIZZA MENU CLIENTE (index.html) ---
 function renderMenu() {
     const container = document.getElementById('menu-container');
-    if (!container) return; // Se siamo in admin.html, si ferma qui senza rompere il codice
+    if (!container) return; 
 
     container.innerHTML = ''; 
 
@@ -53,7 +52,53 @@ function renderMenu() {
     });
 }
 
-// 3. Gestione del Modulo di inserimento (Funziona solo se siamo in admin.html)
+// --- 2. RENDERIZZA LISTA MODIFICA NELL'ADMIN (admin.html) ---
+function renderAdminList() {
+    const adminContainer = document.getElementById('admin-list-container');
+    if (!adminContainer) return;
+
+    adminContainer.innerHTML = '';
+
+    menuData.forEach((section, catIndex) => {
+        const catTitle = document.createElement('h4');
+        catTitle.style.color = '#c9a054';
+        catTitle.style.margin = '15px 0 5px 0';
+        catTitle.style.fontSize = '13px';
+        catTitle.innerText = section.category.toUpperCase();
+        adminContainer.appendChild(catTitle);
+
+        section.items.forEach((item, itemIndex) => {
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.justifyContent = 'space-between';
+            row.style.alignItems = 'center';
+            row.style.padding = '8px 0';
+            row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+
+            row.innerHTML = `
+                <span style="font-size:14px;">${item.name} (${item.price})</span>
+                <button onclick="deleteItem(${catIndex}, ${itemIndex})" style="background:#d9534f; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:12px;">Elimina</button>
+            `;
+            adminContainer.appendChild(row);
+        });
+    });
+}
+
+// --- 3. FUNZIONE PER ELIMINARE UN PRODOTTO ---
+window.deleteItem = function(catIndex, itemIndex) {
+    if (confirm(`Vuoi davvero eliminare ${menuData[catIndex].items[itemIndex].name}?`)) {
+        // Rimuove l'elemento dall'array usando lo splice
+        menuData[catIndex].items.splice(itemIndex, 1);
+        
+        // Aggiorna la memoria locale
+        localStorage.setItem('theTimeMenu', JSON.stringify(menuData));
+        
+        // Ridisegna la lista admin corrente
+        renderAdminList();
+    }
+}
+
+// --- 4. GESTIONE INVIO MODULO ADDIZIONE ---
 const adminForm = document.getElementById('admin-form');
 if (adminForm) {
     adminForm.addEventListener('submit', function(e) {
@@ -79,10 +124,13 @@ if (adminForm) {
             document.getElementById('admin-price').value = '';
             document.getElementById('admin-desc').value = '';
             
-            alert('Prodotto aggiunto con successo! Vai sulla pagina del menù per vederlo. 🔥');
+            // Aggiorna subito la lista visibile nell'admin
+            renderAdminList();
+            alert('Prodotto aggiunto con successo!');
         }
     });
 }
 
-// Avvia il rendering se siamo sulla pagina clienti
+// Avvio automatico in base alla pagina in cui ci troviamo
 renderMenu();
+renderAdminList();

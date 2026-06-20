@@ -6,11 +6,10 @@
     <title>The Time - Pannello Admin</title>
     <link rel="stylesheet" href="style.css">
     <script>
-        // Blocco di sicurezza immediato prima di caricare la pagina
         const password = prompt("Inserisci la password amministratore:");
         if (password !== "admin123") {
             alert("Password errata! Accesso negato.");
-            window.location.href = "index.html"; // Rimanda al menu clienti
+            window.location.href = "index.html";
         }
     </script>
 </head>
@@ -22,29 +21,36 @@
     </header>
 
     <main>
-        <div class="admin-panel" style="padding: 20px; background: rgba(201, 160, 84, 0.1); border: 1px solid #c9a054; border-radius: 8px;">
+        <div class="admin-panel" style="padding: 20px; background: rgba(201, 160, 84, 0.1); border: 1px solid #c9a054; border-radius: 8px; margin-bottom: 30px;">
+            <h3 style="color: #c9a054; margin-bottom: 15px; text-transform: uppercase; font-size: 14px;">Aggiungi Prodotto</h3>
             <form id="admin-form">
                 <div style="margin-bottom: 15px;">
                     <label style="display:block; font-size:13px; margin-bottom:5px;">Seleziona Categoria:</label>
-                    <select id="admin-category" style="width:100%; padding:10px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px; font-size:14px;">
+                    <select id="admin-category" style="width:100%; padding:10px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px;">
                         <option value="Special Cocktails">Special Cocktails</option>
                         <option value="Birreria">Birreria</option>
                     </select>
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display:block; font-size:13px; margin-bottom:5px;">Nome Prodotto:</label>
-                    <input type="text" id="admin-name" required placeholder="Es. Mojito" style="width:100%; padding:10px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px; font-size:14px;">
+                    <input type="text" id="admin-name" required placeholder="Es. Mojito" style="width:100%; padding:10px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px;">
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display:block; font-size:13px; margin-bottom:5px;">Prezzo (Senza €):</label>
-                    <input type="text" id="admin-price" required placeholder="Es. 5,50" style="width:100%; padding:10px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px; font-size:14px;">
+                    <input type="text" id="admin-price" required placeholder="Es. 5,50" style="width:100%; padding:10px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px;">
                 </div>
                 <div style="margin-bottom: 20px;">
                     <label style="display:block; font-size:13px; margin-bottom:5px;">Descrizione / Ingredienti:</label>
-                    <textarea id="admin-desc" placeholder="Es. Rum, menta, lime..." style="width:100%; padding:10px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px; font-family:inherit; font-size:14px; height:80px;"></textarea>
+                    <textarea id="admin-desc" placeholder="Es. Rum, menta..." style="width:100%; padding:10px; background:#12241b; color:#fff; border:1px solid #c9a054; border-radius:4px; font-family:inherit; height:60px;"></textarea>
                 </div>
-                <button type="submit" style="width:100%; padding:12px; background:#c9a054; color:#12241b; font-weight:bold; border:none; border-radius:4px; cursor:pointer; text-transform:uppercase; font-size:14px;">Aggiungi al Menu</button>
+                <button type="submit" style="width:100%; padding:12px; background:#c9a054; color:#12241b; font-weight:bold; border:none; border-radius:4px; cursor:pointer; text-transform:uppercase;">Aggiungi al Menu</button>
             </form>
+        </div>
+
+        <div class="admin-panel" style="padding: 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(201, 160, 84, 0.3); border-radius: 8px;">
+            <h3 style="color: #c9a054; margin-bottom: 15px; text-transform: uppercase; font-size: 14px;">Lista Prodotti (Clicca per eliminare)</h3>
+            <div id="admin-list-container">
+                </div>
         </div>
 
         <div style="text-align: center; margin-top: 30px;">
