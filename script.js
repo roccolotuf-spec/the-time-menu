@@ -1,5 +1,5 @@
-// Dati reali presi dalle foto del menu "The Time"
-const menuData = [
+// 1. Dati iniziali del menu (se non c'è nulla salvato nel browser)
+const defaultMenuData = [
     {
         category: "Special Cocktails",
         items: [
@@ -23,28 +23,69 @@ const menuData = [
     }
 ];
 
-// Funzione per generare il menu sulla pagina HTML
-const container = document.getElementById('menu-container');
+// Carica i dati salvati o usa quelli di default
+let menuData = JSON.parse(localStorage.getItem('theTimeMenu')) || defaultMenuData;
 
-menuData.forEach(section => {
-    // 1. Crea il titolo della categoria
-    const title = document.createElement('div');
-    title.className = 'section-title';
-    title.innerText = section.category;
-    container.appendChild(title);
+// 2. Funzione per renderizzare il menu nell'HTML
+function renderMenu() {
+    const container = document.getElementById('menu-container');
+    container.innerHTML = ''; // Svuota prima di rifare il ciclo
 
-    // 2. Crea i singoli elementi
-    section.items.forEach(item => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'menu-item';
+    menuData.forEach(section => {
+        const title = document.createElement('div');
+        title.className = 'section-title';
+        title.innerText = section.category;
+        container.appendChild(title);
 
-        itemDiv.innerHTML = `
-            <div class="item-header">
-                <span class="item-name">${item.name}</span>
-                <span class="item-price">${item.price}</span>
-            </div>
-            ${item.desc ? `<div class="item-description">${item.desc}</div>` : ''}
-        `;
-        container.appendChild(itemDiv);
+        section.items.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'menu-item';
+            itemDiv.innerHTML = `
+                <div class="item-header">
+                    <span class="item-name">${item.name}</span>
+                    <span class="item-price">${item.price}</span>
+                </div>
+                ${item.desc ? `<div class="item-description">${item.desc}</div>` : ''}
+            `;
+            container.appendChild(itemDiv);
+        });
     });
+}
+
+// 3. Logica del Pannello Admin per aggiungere prodotti al volo
+document.getElementById('admin-form').addEventListener('submit', function(e) {
+    e.preventDefault(); // Blocca il ricaricamento della pagina
+
+    const category = document.getElementById('admin-category').value;
+    const name = document.getElementById('admin-name').value;
+    const price = document.getElementById('admin-price').value;
+    const desc = document.getElementById('admin-desc').value;
+
+    // Trova la categoria giusta nell'array
+    const targetSection = menuData.find(section => section.category === category);
+
+    if (targetSection) {
+        // Aggiunge il nuovo prodotto
+        targetSection.items.push({
+            name: name,
+            price: `€ ${price}`,
+            desc: desc
+        });
+
+        // Salva nel localStorage del browser
+        localStorage.setItem('theTimeMenu', JSON.stringify(menuData));
+
+        // Aggiorna la vista del menu all'istante
+        renderMenu();
+
+        // Svuota i campi del form
+        document.getElementById('admin-name').value = '';
+        document.getElementById('admin-price').value = '';
+        document.getElementById('admin-desc').value = '';
+        
+        alert('Prodotto aggiunto al volo con successo! 🔥');
+    }
 });
+
+// Mostra il menu all'avvio
+renderMenu();
